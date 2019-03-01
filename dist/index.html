@@ -10,13 +10,15 @@
 <html>
 
 <body>
-    <h1 id='header'>Map places</h1>
-    <div id='searchBoxes'>
-        <input type="text" id="titleFilter" onkeyup="filterTitle('titleFilter')" placeholder="Filter places by title">
-        <input type="text" id="keywordFilter" onkeyup="filterKeywords('keywordFilter')" placeholder="Filter places by keywords">
-    <div>    
-        <input type="checkbox" id="filterFavorites" onclick='filterFavorites()' value='false'>
-        Show only favorites
+    <div id='headerContainer'>
+        <h1 id='header'>Map places</h1>
+        <div id='searchBoxes'>
+                <input type="text" id="titleFilter" onkeyup="filterTitle('titleFilter')" placeholder="Filter places by title">
+                <input type="text" id="keywordFilter" onkeyup="filterKeywords('keywordFilter')" placeholder="Filter places by keywords">
+            <div>    
+                <input type="checkbox" id="filterFavorites" onclick='filterFavorites()' value='false'>
+                Show only favorites
+            </div>
     </div>
     </div>
     <div id="map"></div>

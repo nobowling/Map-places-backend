@@ -1,7 +1,8 @@
 #map {
-    height: 95%;
+    height: 100%;
     border: solid 1px;
     margin: 5px;
+    border-radius: 5px;
 }
 
 html,
@@ -9,6 +10,7 @@ body {
     height: 90%;
     margin: 0;
     padding: 0;
+    background-color: black;
 }
 
 #add {
@@ -18,6 +20,9 @@ body {
 #header {
     text-align: center;
     height: 10%;
+    font-size: 40px;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 #searchBoxes {
@@ -31,4 +36,33 @@ body {
     border-radius: 3px;
     text-align: center;
 }
+
+#removeFavoritesButton, #addFavoritesButton, #saveEditsButton {
+    color: white;
+    background-color: black;
+    width: 200px;
+    height: 30px;
+}
+
+.deleteMarkerButton {
+    color: white;
+    background-color: red;
+    width: 200px;
+    height: 30px;
+}
+
+#saveMarkerButton {
+    color: white;
+    background-color: green;
+    width: 200px;
+    height: 30px;
+}
+
+#headerContainer {
+    border: solid black 1px;
+    border-radius: 5px;
+    margin: 5px 5px 0px 5px;
+    background-color: lightblue;
+}
+
 

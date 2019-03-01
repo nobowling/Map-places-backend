@@ -88,7 +88,7 @@ function initMap() {
                             <p>Latitude: ${markers[i].latitude}</p>
                             <p>Longitude: ${markers[i].longitude}</p>
                             <p>Keywords: ${markers[i].keywords}</p>
-                            <button id='${markers[i].id}'onclick='deleteMarker()'>Delete</button><br>
+                            <button id='${markers[i].id}'onclick='deleteMarker()' class='deleteMarkerButton' >Delete</button><br>
                             <button id='addFavoritesButton' class='${markers[i].id}'onclick='addToFavorites()'>Add to favorites</button><br>
                             <button id='removeFavoritesButton' class='${markers[i].id}'onclick='removeFromFavorites()'>Remove from favorites</button><br>
                             <div id='infowindow'>
@@ -100,8 +100,7 @@ function initMap() {
                                 Longitude: <br><input id='editPlaceLng'value='${markers[i].longitude}'><br>
                                 Keywords: <br><input id='editPlaceKeywords'value='${markers[i].keywords}'><br>
                                 Add or remove from favorites: <br> <input id='editMarkerFavorite' type='checkbox' value ='false' onclick='editCheck()'><br>
-                                <button onclick='test()'>Test</button>
-                            <button class='${markers[i].id}' onclick='editMarker()'>Save edits</button>
+                            <button  id='saveEditsButton' class='${markers[i].id}' onclick='editMarker()'>Save edits</button>
                             </div>
                             </div>
                             `
@@ -236,7 +235,7 @@ function initMap() {
                 <p>Coordinates:</p>
                 <input id='placeLat' value='${marker.latitude}'><br>
                 <input id='placeLng'value='${marker.longitude}'><br>
-                <button onclick='addMarker()'>Save</button>
+                <button id='saveMarkerButton' onclick='addMarker()'>Save</button>
             </div>
             `
         )
