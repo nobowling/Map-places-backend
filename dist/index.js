@@ -57,6 +57,7 @@ function deleteMarker() {
         .then(response => {
             console.log('delete response: ', response)
         })
+    location.reload(true)
 }
 
 function editMarker() {
