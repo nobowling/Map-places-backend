@@ -1,4 +1,4 @@
-function addMarker() {
+saveMarker =() => {
 
     const markerObject = {
         name: document.getElementById('placeName').value,
@@ -17,15 +17,15 @@ function addMarker() {
     location.reload(true)
 }
 
-function check() {
+check = () => {
     document.getElementById('checkbox').checked !== document.getElementById('checkbox').checked
 }
 
-function editCheck() {
+editCheck = () => {
     document.getElementById('editMarkerFavorite').checked !== document.getElementById('editMarkerFavorite').checked
 }
 
-function editMarker() {
+editMarker = () => {
 
     const editId = event.target.getAttribute('class')
     const editMarkerObject = {
@@ -44,7 +44,7 @@ function editMarker() {
     location.reload(true)
 }
 
-function initMap() {
+initMap = () => {
     var map = new google.maps.Map(document.getElementById('map'), {
         center: new google.maps.LatLng(60.20364340471037, 24.88388737511127),
         zoom: 10
@@ -59,7 +59,6 @@ function initMap() {
         let markerList = [];
         let notFavorites = [];
 
-        console.log(markers)
         for (var i = 0; i < markers.length; i++) {
             var latLng = new google.maps.LatLng(markers[i].latitude, markers[i].longitude);
             var marker = new google.maps.Marker({
@@ -92,7 +91,7 @@ function initMap() {
                             <button id='addFavoritesButton' class='${markers[i].id}'onclick='addToFavorites()'>Add to favorites</button><br>
                             <button id='removeFavoritesButton' class='${markers[i].id}'onclick='removeFromFavorites()'>Remove from favorites</button><br>
                             <div id='infowindow'>
-                            <h4 onclick='toggleEditVisibility()'>Edit place</h4>
+                            <button id='openEditWindowButton'onclick='toggleDiv()'>Edit place</button>
                             <div id='editWindow'>
                                 Name: <br><input id='editPlaceName' type='text' value='${markers[i].name}'><br>
                                 Description: <br><input id='editPlaceDescription' type='text' value='${markers[i].description}'><br>
@@ -211,7 +210,7 @@ function initMap() {
         addMarker(event.latLng)
     })
 
-    function addMarker(location) {
+    addMarker = (location) => {
         var marker = new google.maps.Marker({
             position: location,
             map: map,
@@ -235,7 +234,7 @@ function initMap() {
                 <p>Coordinates:</p>
                 <input id='placeLat' value='${marker.latitude}'><br>
                 <input id='placeLng'value='${marker.longitude}'><br>
-                <button id='saveMarkerButton' onclick='addMarker()'>Save</button>
+                <button id='saveMarkerButton' onclick='saveMarker()'>Save</button>
             </div>
             `
         )
@@ -248,10 +247,15 @@ function initMap() {
 
 window.initMap = initMap;
 
-function toggleBounce() {
+toggleBounce = () => {
     if (marker.getAnimation() !== null) {
         marker.setAnimation(null);
     } else {
         marker.setAnimation(google.maps.Animation.BOUNCE);
     }
+}
+
+toggleDiv = () => {
+    var div = document.getElementById('editWindow');
+    div.style.display = div.style.display == "block" ? "none" : "block";
 }
