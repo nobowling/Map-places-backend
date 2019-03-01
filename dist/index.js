@@ -9,8 +9,6 @@ function addMarker() {
         favorite: document.getElementById('checkbox').checked
     }
 
-    console.log(markerObject.keywords)
-
     axios
         .post('/markers', markerObject)
         .then(response => {
@@ -19,45 +17,12 @@ function addMarker() {
     location.reload(true)
 }
 
-function addToFavorites() {
-
-    const editId = event.target.getAttribute('class')
-    const editMarkerObject = {
-        name: document.getElementById('editPlaceName').value,
-        description: document.getElementById('editPlaceDescription').value,
-        latitude: document.getElementById('editPlaceLat').value,
-        longitude: document.getElementById('editPlaceLng').value,
-        keywords: document.getElementById('editPlaceKeywords').value,
-        favorite: true
-    }
-
-    axios.put(`/markers/${editId}`, editMarkerObject)
-        .then(response => {
-            console.log('edit response: ', response)
-        })
-    location.reload(true)
-
-    console.log('editable object: ', editId, editMarkerObject)
-}
-
 function check() {
     document.getElementById('checkbox').checked !== document.getElementById('checkbox').checked
 }
 
 function editCheck() {
     document.getElementById('editMarkerFavorite').checked !== document.getElementById('editMarkerFavorite').checked
-}
-
-function deleteMarker() {
-    const placeId = event.target.getAttribute('id')
-
-    console.log('placeID: ', placeId)
-
-    axios.delete(`/markers/${placeId}`, placeId)
-        .then(response => {
-            console.log('delete response: ', response)
-        })
-    location.reload(true)
 }
 
 function editMarker() {
@@ -72,22 +37,21 @@ function editMarker() {
         favorite: document.getElementById('editMarkerFavorite').checked
     }
 
-    axios.put(`/markers${editId}`, editMarkerObject)
+    axios.put(`/markers/${editId}`, editMarkerObject)
         .then(response => {
             console.log('edit response: ', response)
         })
     location.reload(true)
-
-    console.log('editable object: ', editId, editMarkerObject)
 }
 
 function initMap() {
     var map = new google.maps.Map(document.getElementById('map'), {
         center: new google.maps.LatLng(60.20364340471037, 24.88388737511127),
-        zoom: 14
+        zoom: 10
     });
     var infowindow = new google.maps.InfoWindow();
     var favoriteIcon = 'http://maps.google.com/mapfiles/kml/paddle/ylw-stars.png'
+    var defaultIcon = 'http://maps.google.com/mapfiles/kml/paddle/red-circle.png'
 
     let promise = axios.get('/markers/')
     promise.then((response) => {
@@ -95,6 +59,7 @@ function initMap() {
         let markerList = [];
         let notFavorites = [];
 
+        console.log(markers)
         for (var i = 0; i < markers.length; i++) {
             var latLng = new google.maps.LatLng(markers[i].latitude, markers[i].longitude);
             var marker = new google.maps.Marker({
@@ -104,6 +69,7 @@ function initMap() {
                 id: markers[i].id,
                 keywords: markers[i].keywords,
                 favorite: markers[i].favorite,
+                icon: defaultIcon
             });
             markerList.push(marker)
             if (marker.favorite) {
@@ -113,7 +79,7 @@ function initMap() {
             if (!marker.favorite) {
                 notFavorites.push(marker)
             }
-            
+
             google.maps.event.addListener(marker, 'click', (function (marker, i) {
                 return function () {
                     infowindow.setContent(
@@ -126,15 +92,16 @@ function initMap() {
                             <button id='addFavoritesButton' class='${markers[i].id}'onclick='addToFavorites()'>Add to favorites</button><br>
                             <button id='removeFavoritesButton' class='${markers[i].id}'onclick='removeFromFavorites()'>Remove from favorites</button><br>
                             <div id='infowindow'>
-                            <h4>Edit place</h4>
-                            <div>
+                            <h4 onclick='toggleEditVisibility()'>Edit place</h4>
+                            <div id='editWindow'>
                                 Name: <br><input id='editPlaceName' type='text' value='${markers[i].name}'><br>
                                 Description: <br><input id='editPlaceDescription' type='text' value='${markers[i].description}'><br>
                                 Latitude: <br><input id='editPlaceLat' value='${markers[i].latitude}'><br>
                                 Longitude: <br><input id='editPlaceLng'value='${markers[i].longitude}'><br>
                                 Keywords: <br><input id='editPlaceKeywords'value='${markers[i].keywords}'><br>
                                 Add or remove from favorites: <br> <input id='editMarkerFavorite' type='checkbox' value ='false' onclick='editCheck()'><br>
-                            <button id='saveEditsButton' class='${markers[i].id}' onclick='editMarker()'>Save edits</button>
+                                <button onclick='test()'>Test</button>
+                            <button class='${markers[i].id}' onclick='editMarker()'>Save edits</button>
                             </div>
                             </div>
                             `
@@ -175,8 +142,68 @@ function initMap() {
             for (let i = 0; i < markerList.length; i++) {
                 if (checkboxValue === false) {
                     markerList[i].setVisible(true)
-                } else { 
+                } else {
                     notFavorites[i].setVisible(false)
+                }
+            }
+        }
+        deleteMarker = () => {
+            const placeId = event.target.getAttribute('id')
+
+            axios.delete(`/markers/${placeId}`, placeId)
+                .then(response => {
+                    console.log('delete response: ', response)
+                })
+            for (let i = 0; i < markerList.length; i++) {
+                if (placeId === markerList[i].id) {
+                    markerList[i].setMap(null)
+                }
+            }
+        }
+
+        addToFavorites = () => {
+
+            const editId = event.target.getAttribute('class')
+            const editMarkerObject = {
+                name: document.getElementById('editPlaceName').value,
+                description: document.getElementById('editPlaceDescription').value,
+                latitude: document.getElementById('editPlaceLat').value,
+                longitude: document.getElementById('editPlaceLng').value,
+                keywords: document.getElementById('editPlaceKeywords').value,
+                favorite: true
+            }
+
+            axios.put(`/markers/${editId}`, editMarkerObject)
+                .then(response => {
+                    console.log('edit response: ', response)
+                })
+
+            for (let i = 0; i < markerList.length; i++) {
+                if (editId === markerList[i].id) {
+                    markerList[i].setIcon(favoriteIcon)
+                }
+            }
+        }
+
+        removeFromFavorites = () => {
+
+            const editId = event.target.getAttribute('class')
+            const editMarkerObject = {
+                name: document.getElementById('editPlaceName').value,
+                description: document.getElementById('editPlaceDescription').value,
+                latitude: document.getElementById('editPlaceLat').value,
+                longitude: document.getElementById('editPlaceLng').value,
+                keywords: document.getElementById('editPlaceKeywords').value,
+                favorite: false
+            }
+
+            axios.put(`/markers/${editId}`, editMarkerObject)
+                .then(response => {
+                    console.log('edit response: ', response)
+                })
+            for (let i = 0; i < markerList.length; i++) {
+                if (editId === markerList[i].id) {
+                    markerList[i].setIcon(defaultIcon)
                 }
             }
         }
@@ -196,6 +223,7 @@ function initMap() {
             longitude: location.lng(),
             keywords: 'no words yet',
             animation: google.maps.Animation.DROP,
+            icon: defaultIcon
         });
         infowindow.setContent(
             `
@@ -221,27 +249,6 @@ function initMap() {
 
 window.initMap = initMap;
 
-function removeFromFavorites() {
-
-    const editId = event.target.getAttribute('class')
-    const editMarkerObject = {
-        name: document.getElementById('editPlaceName').value,
-        description: document.getElementById('editPlaceDescription').value,
-        latitude: document.getElementById('editPlaceLat').value,
-        longitude: document.getElementById('editPlaceLng').value,
-        keywords: document.getElementById('editPlaceKeywords').value,
-        favorite: false
-    }
-
-    axios.put(`/markers/${editId}`, editMarkerObject)
-        .then(response => {
-            console.log('edit response: ', response)
-        })
-    location.reload(true)
-
-    console.log('editable object: ', editId, editMarkerObject)
-}
-
 function toggleBounce() {
     if (marker.getAnimation() !== null) {
         marker.setAnimation(null);
@@ -249,4 +256,3 @@ function toggleBounce() {
         marker.setAnimation(google.maps.Animation.BOUNCE);
     }
 }
-
