@@ -57,7 +57,6 @@ function deleteMarker() {
         .then(response => {
             console.log('delete response: ', response)
         })
-    location.reload(true)
 }
 
 function editMarker() {
@@ -95,7 +94,6 @@ function initMap() {
         let markerList = [];
         let notFavorites = [];
 
-        console.log(markers)
         for (var i = 0; i < markers.length; i++) {
             var latLng = new google.maps.LatLng(markers[i].latitude, markers[i].longitude);
             var marker = new google.maps.Marker({
@@ -114,8 +112,6 @@ function initMap() {
             if (!marker.favorite) {
                 notFavorites.push(marker)
             }
-            console.log('markerlist: ', markerList)
-            console.log('not favorites: ', notFavorites)
             
             google.maps.event.addListener(marker, 'click', (function (marker, i) {
                 return function () {
@@ -129,16 +125,15 @@ function initMap() {
                             <button id='addFavoritesButton' class='${markers[i].id}'onclick='addToFavorites()'>Add to favorites</button><br>
                             <button id='removeFavoritesButton' class='${markers[i].id}'onclick='removeFromFavorites()'>Remove from favorites</button><br>
                             <div id='infowindow'>
-                            <h4 onclick='toggleEditVisibility()'>Edit place</h4>
-                            <div id='editWindow'>
+                            <h4>Edit place</h4>
+                            <div>
                                 Name: <br><input id='editPlaceName' type='text' value='${markers[i].name}'><br>
                                 Description: <br><input id='editPlaceDescription' type='text' value='${markers[i].description}'><br>
                                 Latitude: <br><input id='editPlaceLat' value='${markers[i].latitude}'><br>
                                 Longitude: <br><input id='editPlaceLng'value='${markers[i].longitude}'><br>
                                 Keywords: <br><input id='editPlaceKeywords'value='${markers[i].keywords}'><br>
                                 Add or remove from favorites: <br> <input id='editMarkerFavorite' type='checkbox' value ='false' onclick='editCheck()'><br>
-                                <button onclick='test()'>Test</button>
-                            <button class='${markers[i].id}' onclick='editMarker()'>Save edits</button>
+                            <button id='saveEditsButton' class='${markers[i].id}' onclick='editMarker()'>Save edits</button>
                             </div>
                             </div>
                             `
@@ -176,7 +171,6 @@ function initMap() {
         filterFavorites = () => {
             document.getElementById('filterFavorites').checked !== document.getElementById('filterFavorites').checked
             let checkboxValue = document.getElementById('filterFavorites').checked
-            console.log(markerList)
             for (let i = 0; i < markerList.length; i++) {
                 if (checkboxValue === false) {
                     markerList[i].setVisible(true)
