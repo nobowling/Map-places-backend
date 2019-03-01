@@ -3,7 +3,8 @@
 - Developed using Microsoft Windows and Google Chrome.
 - Backend uses Express framework
 - Backend communicates with Mlab cloud databse service which I set up for this project
-- Frontend for this project is made with HTML, CSS and vanilla Javascript. You can find it here: https://github.com/nobowling/Map-places-frontend
+- Uses frontend as it's static build
+- Frontend for this project is made with HTML, CSS and vanilla Javascript. You can find it here: https://github.com/nobowling/Map-places-frontend (or in dist folder)
 
 - I recommend using Google Chrome and a system that runs Google Maps,
 but program should be supported most of the other known browsers as well.
