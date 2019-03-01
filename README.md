@@ -20,8 +20,7 @@ Instructions for using:
 - Have fun!
 
 Known issues (working on it):
-- Every now and then when loading the page a problem occurs with the axios library
-- For example markers won't load, saving edits won't take effect or saving marker fails
+- Every now and then when loading the page a problem occurs with the axios library which causes that markers won't load, saving edits won't take effect or saving marker fails
 - I think the root of this problem is in axios itself rather than my code (hopefully), working on a solution for this one
 - As a user you can just reload the page which'll get it going again
 - Editing and saving a marker place requires a page reload to take effect
