@@ -9,7 +9,7 @@ app.use(express.static('dist'))
 
 const mongoose = require('mongoose')
 
-const url = 'mongodb://nobowling:AjquCuH5NdtpDZ4@ds259897.mlab.com:59897/googlemapsapi'
+const url = 'mongodb://username:password@ds259897.mlab.com:59897/googlemapsapi'
 
 mongoose.connect(url)
 
